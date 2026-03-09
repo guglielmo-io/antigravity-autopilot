@@ -1,0 +1,11 @@
+# Files to exclude from VSIX package
+.git/
+.gitignore
+.vscode/
+.vscode-test/
+node_modules/
+*.vsix
+CONTRIBUTING.md
+.github/
+coverage/
+*.log

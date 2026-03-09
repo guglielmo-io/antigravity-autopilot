@@ -1,0 +1,103 @@
+{
+  "name": "antigravity-autopilot",
+  "displayName": "Antigravity Autopilot",
+  "description": "Full autopilot for your AI coding agent — auto-retry, auto-continue, safe command approval, and rate limit handling",
+  "version": "2.0.0",
+  "publisher": "William",
+  "author": {
+    "name": "Guglielmo"
+  },
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.80.0"
+  },
+  "extensionKind": ["ui"],
+  "categories": [
+    "Other"
+  ],
+  "keywords": [
+    "antigravity",
+    "autopilot",
+    "auto-retry",
+    "auto-continue",
+    "auto-run",
+    "agent",
+    "automation",
+    "gemini"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "autopilot.start",
+        "title": "Autopilot: Start"
+      },
+      {
+        "command": "autopilot.stop",
+        "title": "Autopilot: Stop"
+      },
+      {
+        "command": "autopilot.stats",
+        "title": "Autopilot: Show Stats"
+      }
+    ],
+    "configuration": {
+      "title": "Antigravity Autopilot",
+      "properties": {
+        "autopilot.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Auto-start Autopilot when Antigravity launches"
+        },
+        "autopilot.cdpPort": {
+          "type": "number",
+          "default": 0,
+          "description": "Custom CDP port. Set to 0 (default) to auto-detect from common ports (9222, 9000-9003)."
+        },
+        "autopilot.autoRetry": {
+          "type": "boolean",
+          "default": true,
+          "description": "Auto-click Retry when the agent encounters an error"
+        },
+        "autopilot.autoContinue": {
+          "type": "boolean",
+          "default": true,
+          "description": "Auto-click Continue when the agent pauses mid-generation"
+        },
+        "autopilot.autoRun": {
+          "type": "boolean",
+          "default": false,
+          "description": "Auto-approve safe terminal commands. Dangerous commands matching the blocklist are always skipped. (Opt-in)"
+        },
+        "autopilot.runBlocklist": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [
+            "rm -rf", "rm -r", "sudo", "drop ", "delete ", "format ",
+            "mkfs", "shutdown", "reboot", "kill -9", "truncate",
+            ":>", "> /dev", "dd if=", "chmod 777", "chown"
+          ],
+          "description": "Commands containing any of these patterns will never be auto-approved by Auto-Run"
+        },
+        "autopilot.rateLimitHandler": {
+          "type": "boolean",
+          "default": true,
+          "description": "Auto-wait and retry when the AI provider returns a rate limit error"
+        },
+        "autopilot.showStats": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show session action counts in the status bar tooltip"
+        }
+      }
+    }
+  },
+  "dependencies": {
+    "ws": "^8.14.0"
+  }
+}
