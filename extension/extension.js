@@ -124,12 +124,22 @@ function buildInjectionScript(config) {
         return true;
     }
 
+    function getAgentDoc() {
+        // Try iframe first (legacy layout)
+        const frame = document.getElementById('antigravity.agentPanel');
+        if (frame && frame.contentDocument && frame.contentDocument.readyState === 'complete') {
+            return frame.contentDocument;
+        }
+        // Current layout: agent panel is a DIV container inside the document
+        const container = document.getElementById('antigravity.agentViewContainerId');
+        if (container) return document;
+        return null;
+    }
+
     function check() {
         try {
-            const frame = document.getElementById('antigravity.agentPanel');
-            if (!frame) return;
-            const doc = frame.contentDocument;
-            if (!doc || doc.readyState !== 'complete') return;
+            const doc = getAgentDoc();
+            if (!doc) return;
 
             if (rateLimitActive) return;
 

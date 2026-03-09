@@ -1,6 +1,12 @@
-<!-- Updated: 2026-03-09 | Session: 6aeb3c94 -->
+<!-- Updated: 2026-03-09 | Session: e82eba9a -->
 
 # Changelog
+
+## [2.0.2] - 2026-03-09
+
+### Fixed
+- Agent panel detection: no longer requires iframe (`antigravity.agentPanel`). Now supports current DIV-based layout (`antigravity.agentViewContainerId`) with iframe fallback for legacy.
+- Buttons (retry, continue, run) are now correctly found and clicked.
 
 ## [2.0.1] - 2026-03-09
 

@@ -1,4 +1,4 @@
-<!-- Updated: 2026-03-09 | Session: 6aeb3c94 -->
+<!-- Updated: 2026-03-09 | Session: e82eba9a -->
 
 # Architecture: Antigravity Autopilot
 
@@ -20,7 +20,7 @@
 ```
 
 ## Key Decisions
-- **CDP over DOM**: Agent panel runs in sandboxed iframe; direct DOM access blocked.
+- **CDP over DOM**: Agent panel runs inside the workbench DOM (DIV containers); CDP required for script injection.
 - **extensionKind: ui**: Forces local execution for Remote SSH compatibility.
 - **Single injection script**: All features bundled as one configurable script; config object passed at injection time.
 - **Safety-first Auto-Run**: Opt-in (default off), command text inspected against configurable blocklist before approval.
