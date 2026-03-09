@@ -2,6 +2,13 @@
 
 # Changelog
 
+## [2.0.1] - 2026-03-09
+
+### Fixed
+- CDP connection now retries with exponential backoff (5 attempts, 2-32s delays) instead of failing immediately.
+- Shows spinning "Connecting..." status bar during retry attempts.
+- Removed conflicting old `antigravity-auto-retry` v1.0.0 extension.
+
 ## [2.0.0] - 2026-03-09
 
 ### Renamed

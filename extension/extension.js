@@ -197,14 +197,18 @@ function buildInjectionScript(config) {
 
 async function findCDPPort() {
     const config = getConfig();
+    const standardPorts = [9222, 9000, 9001, 9002, 9003];
+
+    // Try custom port first
     if (config.cdpPort > 0) {
         try {
             if (await checkPort(config.cdpPort)) return config.cdpPort;
         } catch (e) { }
-        return null;
+        console.log(`[Autopilot] Custom port ${config.cdpPort} not responding, trying standard ports...`);
     }
-    const ports = [9222, 9000, 9001, 9002, 9003];
-    for (const port of ports) {
+
+    // Always fallback to standard ports
+    for (const port of standardPorts) {
         try {
             if (await checkPort(port)) return port;
         } catch (e) { }
@@ -367,7 +371,10 @@ function updateStatusBar() {
     }
 }
 
-async function startAutopilot(context) {
+async function startAutopilot(context, attempt) {
+    const MAX_RETRIES = 5;
+    const currentAttempt = attempt || 1;
+
     isActive = true;
     sessionStats = { retries: 0, continues: 0, runs: 0, rateLimitWaits: 0 };
     updateStatusBar();
@@ -385,13 +392,18 @@ async function startAutopilot(context) {
             `🚀 Autopilot: Active (${windowCount} window${windowCount > 1 ? 's' : ''}) | ${features.join(', ')}`
         );
 
-        // Poll stats every 5 seconds
         statsInterval = setInterval(pollStats, 5000);
+    } else if (currentAttempt < MAX_RETRIES) {
+        const delayMs = Math.pow(2, currentAttempt) * 1000;
+        console.log(`[Autopilot] CDP not ready, retry ${currentAttempt}/${MAX_RETRIES} in ${delayMs / 1000}s...`);
+        statusBarItem.text = '$(sync~spin) Autopilot: Connecting...';
+        statusBarItem.tooltip = `Waiting for CDP (attempt ${currentAttempt}/${MAX_RETRIES})`;
+        setTimeout(() => startAutopilot(context, currentAttempt + 1), delayMs);
     } else {
         isActive = false;
         updateStatusBar();
         vscode.window.showErrorMessage(
-            '❌ Autopilot: CDP not available. Launch Antigravity with --remote-debugging-port=9222'
+            '❌ Autopilot: CDP not available after ' + MAX_RETRIES + ' attempts. Launch Antigravity with --remote-debugging-port=9222'
         );
     }
 }
