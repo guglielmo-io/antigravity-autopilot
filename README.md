@@ -2,11 +2,11 @@
 
 <img src="https://img.shields.io/badge/Antigravity-Autopilot-blueviolet?style=for-the-badge&logo=visual-studio-code&logoColor=white" alt="Antigravity Autopilot" />
 
-# 🚀 Antigravity Autopilot
+# Antigravity Autopilot
 
 ### Your AI agent writes the code. Autopilot handles everything else.
 
-**One extension. Zero babysitting. Full autonomy for your AI coding agent.**
+**One script. Zero babysitting. Full autonomy for your AI coding agent.**
 
 <br />
 
@@ -18,11 +18,11 @@
 
 <br />
 
-**Auto-Retry** · **Auto-Continue** · **Auto-Run** · **Rate Limit Handler** · **Session Stats**
+**Auto-Retry** · **Auto-Continue** · **Auto-Run** · **Rate Limit Handler**
 
 <br />
 
-[**⬇️ Download Latest**](https://github.com/guglielmo-io/antigravity-autopilot/releases/latest)&nbsp;&nbsp;&nbsp;·&nbsp;&nbsp;&nbsp;[Report Bug](https://github.com/guglielmo-io/antigravity-autopilot/issues)&nbsp;&nbsp;&nbsp;·&nbsp;&nbsp;&nbsp;[Request Feature](https://github.com/guglielmo-io/antigravity-autopilot/issues)
+[**Download Latest**](https://github.com/guglielmo-io/antigravity-autopilot/releases/latest)&nbsp;&nbsp;&nbsp;·&nbsp;&nbsp;&nbsp;[Report Bug](https://github.com/guglielmo-io/antigravity-autopilot/issues)&nbsp;&nbsp;&nbsp;·&nbsp;&nbsp;&nbsp;[Request Feature](https://github.com/guglielmo-io/antigravity-autopilot/issues)
 
 </div>
 
@@ -38,7 +38,7 @@
 <tr>
 <td width="50%">
 
-### ❌ Before
+### Before
 
 ```
 Agent fails → you click Retry
@@ -53,10 +53,10 @@ Repeat 50+ times per session.
 </td>
 <td width="50%">
 
-### ✅ After
+### After
 
 ```
-Agent fails → Autopilot clicks Retry
+Agent fails → patched out at source
 Agent pauses → Autopilot clicks Continue
 Safe command → Autopilot approves it
 Rate limit → Autopilot waits → retries
@@ -75,23 +75,23 @@ You keep working on something else.
 
 <br />
 
-## 🧰 Five Features. One Extension. Zero Clicks.
+## Four Features. One Script. Zero Clicks.
 
 <br />
 
-### 🔄 Auto-Retry — Errors handled instantly
+### Auto-Retry — Errors intercepted at the source
 
-Agent crashed mid-generation? The retry button gets clicked in under 1.5 seconds. Supports **"Retry"**, **"Try Again"**, **"Riprova"**, and more. Multi-language. Multi-window. Always on.
-
-<br />
-
-### ▶️ Auto-Continue — No more "Do you want me to continue?"
-
-Long generation stopped halfway? **"Continue"**, **"Proceed"**, **"Yes"**, **"Continua"** — clicked without you lifting a finger. Chain entire multi-file refactors without touching the keyboard.
+Not a DOM hack. Not a button click. Autopilot patches the actual error handling branches (`case "retryable"`, `case "generic"`) directly in Antigravity's bundled JS. First failure auto-retries via `primaryAction.onClick()` in 500ms. Second failure on the same notification shows the original popup. **This is as fast and reliable as it gets.**
 
 <br />
 
-### ⚡ Auto-Run — Safe commands approved automatically
+### Auto-Continue — No more "Do you want me to continue?"
+
+Long generation stopped halfway? **"Continue"**, **"Proceed"**, **"Yes"**, **"Continua"**, **"Keep Going"** — clicked without you lifting a finger. Chain entire multi-file refactors without touching the keyboard.
+
+<br />
+
+### Auto-Run — Safe commands approved automatically
 
 > **Opt-in and guarded by default.** Disabled until you turn it on.
 
@@ -108,192 +108,143 @@ You control the blocklist. Add patterns, remove patterns, make it yours.
 
 <br />
 
-### 🚦 Rate Limit Handler — Wait it out, hands-free
+### Rate Limit Handler — Wait it out, hands-free
 
-Hit a provider rate limit? Autopilot detects it, reads the wait time, counts down silently, and retries the moment the window opens. Works with messages like **"rate limited"**, **"too many requests"**, **"try again in 30s"**, **"quota exceeded"**.
+Hit a provider rate limit? Autopilot detects it, reads the wait time, counts down silently, and retries the moment the window opens. Works with **"rate limited"**, **"too many requests"**, **"try again in 30s"**, **"quota exceeded"**.
 
 No staring at a timer. No setting reminders. Just results.
 
 <br />
 
-### 📊 Session Stats — Know what Autopilot did for you
-
-Hover the status bar to see live counts: retries, continues, command approvals, rate limit waits. Run `Autopilot: Show Stats` in the Command Palette for a full session summary.
-
-Real numbers. Proof it's working.
-
-<br />
-
 ---
 
 <br />
 
-## 📦 Installation
+## How It Works
 
-Two steps. Under 2 minutes.
-
-### Step 1: Enable Chrome DevTools Protocol (one-time)
-
-Antigravity needs to expose a debugging port so Autopilot can inject its automation.
-
-<details>
-<summary><strong>🐧 Linux</strong></summary>
-<br />
-
-Edit `~/.local/share/applications/antigravity.desktop`:
-
-```ini
-Exec=/usr/share/antigravity/antigravity --remote-debugging-port=9222 %F
-```
-
-</details>
-
-<details>
-<summary><strong>🍎 macOS</strong></summary>
-<br />
-
-Add to your shell config (`~/.zshrc` or `~/.bashrc`):
-
-```bash
-alias antigravity='/Applications/Antigravity.app/Contents/MacOS/Antigravity --remote-debugging-port=9222'
-```
-
-Launch from terminal: `antigravity`
-
-</details>
-
-<details>
-<summary><strong>🪟 Windows</strong></summary>
-<br />
-
-Right-click your Antigravity shortcut → **Properties** → **Target**:
-
-```
-"C:\Users\YOUR_USERNAME\AppData\Local\Programs\Antigravity\Antigravity.exe" --remote-debugging-port=9222
-```
-
-</details>
+Unlike extension-based approaches that require CDP ports and break with multiple instances, Autopilot **patches Antigravity's bundled files directly**. Two layers:
 
 <br />
 
-### Step 2: Install the extension
+### Layer 1 — Source-Level Auto-Retry
 
-**Option A: GUI (Recommended)**
+Structure-based regex matching finds `case "retryable"` and `case "generic"` switch branches in the minified JS and rewrites them to auto-invoke the existing primary action. Applied to both:
 
-1. Download [`antigravity-autopilot-2.0.0.vsix`](https://github.com/guglielmo-io/antigravity-autopilot/releases/latest)
-2. Open Antigravity → `Ctrl+Shift+P` → `Extensions: Install from VSIX...`
-3. Select the file. Done.
+- `resources/app/out/vs/workbench/workbench.desktop.main.js`
+- `resources/app/out/jetskiAgent/main.js`
 
-**Option B: Terminal**
-
-```bash
-# Linux
-antigravity --install-extension antigravity-autopilot-2.0.0.vsix
-
-# macOS
-/Applications/Antigravity.app/Contents/MacOS/Antigravity --install-extension antigravity-autopilot-2.0.0.vsix
-
-# Windows (PowerShell)
-& "$env:LOCALAPPDATA\Programs\Antigravity\Antigravity.exe" --install-extension antigravity-autopilot-2.0.0.vsix
-```
-
-**That's it.** Autopilot starts automatically on next launch.
+Matches on **case labels and notification object structure** — not minified variable names. Survives routine Antigravity updates where only the bundler renames symbols.
 
 <br />
 
----
+### Layer 2 — DOM Autopilot
+
+A self-contained script injected at the end of the workbench file. It polls the agent panel every **1.5 seconds**, detects actionable buttons, and clicks them with a **2.5-second cooldown** to prevent double-clicks. Handles continue prompts, safe command approval, and rate limit recovery.
 
 <br />
-
-## 🎮 Usage
-
-### Status Bar
-
-| Indicator | State |
-|-----------|-------|
-| `🚀 Autopilot: ON` | Active — all enabled features are running |
-| `⭕ Autopilot: OFF` | Disabled |
-
-Hover for live session stats and active feature list.
-
-### Command Palette (`Ctrl+Shift+P`)
-
-| Command | What it does |
-|---------|-------------|
-| `Autopilot: Start` | Activate all enabled features |
-| `Autopilot: Stop` | Stop automation and clean up connections |
-| `Autopilot: Show Stats` | Full session report: features, windows, action counts |
-
-<br />
-
----
-
-<br />
-
-## ⚙️ Configuration
-
-Open **Settings** → search `autopilot`. Every feature toggles independently.
-
-| Setting | Type | Default | What it controls |
-|---------|------|---------|-----------------|
-| `autopilot.enabled` | boolean | `true` | Start on launch |
-| `autopilot.cdpPort` | number | `0` | CDP port (`0` = auto-scan 9222, 9000-9003) |
-| `autopilot.autoRetry` | boolean | `true` | Click retry on agent errors |
-| `autopilot.autoContinue` | boolean | `true` | Click continue on generation pauses |
-| `autopilot.autoRun` | boolean | **`false`** | Approve safe commands *(opt-in)* |
-| `autopilot.runBlocklist` | string[] | *[see above](#-auto-run--safe-commands-approved-automatically)* | Patterns to never auto-approve |
-| `autopilot.rateLimitHandler` | boolean | `true` | Auto-wait and retry on rate limits |
-| `autopilot.showStats` | boolean | `true` | Live stats in status bar tooltip |
-
-> **Only want Auto-Retry?** Turn off the rest. Only want Auto-Continue? Same. Mix and match.
-
-<br />
-
----
-
-<br />
-
-## 🏗️ Architecture
 
 ```
 ┌──────────────────────────────────────────────────────────────────┐
-│                      Antigravity Window                          │
+│                      Antigravity Instance                        │
 │                                                                  │
-│  ┌────────────────────────────────────────────────────────────┐  │
-│  │                 Agent Panel (sandboxed iframe)              │  │
-│  │                                                             │  │
-│  │    ❌ Error        →  [ Retry ]    ←  auto-clicked          │  │
-│  │    ⏸️ Paused       →  [ Continue ] ←  auto-clicked          │  │
-│  │    💻 npm install  →  [ Run ]      ←  auto-approved (safe)  │  │
-│  │    🚦 Rate limited →  waiting...   ←  auto-retried          │  │
-│  │                                                             │  │
-│  └────────────────────────────────────────────────────────────┘  │
-│                              ▲                                    │
-│                    CDP WebSocket connection                       │
-│                              ▲                                    │
-│                 ┌────────────┴────────────┐                      │
-│                 │    Autopilot Engine     │                      │
-│                 │                         │                      │
-│                 │  ⏱ 1.5s scan interval  │                      │
-│                 │  🛡 2.5s click cooldown │                      │
-│                 │  🪟 Multi-window aware  │                      │
-│                 │  🔒 Command blocklist   │                      │
-│                 │  📊 Live stat tracking  │                      │
-│                 └─────────────────────────┘                      │
+│  ┌──────────────────────────────────────────────────────────┐    │
+│  │  workbench.desktop.main.js  (patched)                    │    │
+│  │                                                          │    │
+│  │  Layer 1: case "retryable" → auto-retry at source        │    │
+│  │           case "generic"   → auto-retry at source        │    │
+│  │                                                          │    │
+│  │  Layer 2: DOM autopilot IIFE                             │    │
+│  │           ⏱ 1.5s poll · 🛡 2.5s cooldown                │    │
+│  │           Continue / Run / Rate Limit → auto-handled     │    │
+│  └──────────────────────────────────────────────────────────┘    │
+│                                                                  │
+│  ┌──────────────────────────────────────────────────────────┐    │
+│  │  jetskiAgent/main.js  (patched)                          │    │
+│  │                                                          │    │
+│  │  Layer 1: case "retryable" → auto-retry at source        │    │
+│  │           case "generic"   → auto-retry at source        │    │
+│  └──────────────────────────────────────────────────────────┘    │
+│                                                                  │
+│  No CDP · No extension · No port conflicts                       │
+│  Works across all instances, accounts, and environments          │
 └──────────────────────────────────────────────────────────────────┘
 ```
 
-**How it works under the hood:**
+<br />
 
-1. Connects to Antigravity via **Chrome DevTools Protocol** (WebSocket on port 9222)
-2. Discovers all open windows. Injects a lightweight automation script into each one.
-3. The script scans the agent panel iframe every **1.5 seconds** for actionable buttons.
-4. When a match is found, it clicks — with a **2.5-second cooldown** to prevent double-clicks.
-5. Auto-Run inspects command text in nearby code blocks before approving, checking every entry in the blocklist.
-6. Rate Limit Handler parses wait durations directly from the error message, then auto-retries after the countdown.
-7. Session stats are polled back to the extension every 5 seconds for live tooltip updates.
+---
 
-**Under 10KB.** Zero external API calls. Zero telemetry. Your code, your machine, your data.
+<br />
+
+## Installation
+
+One step. Under 30 seconds.
+
+No extension. No CDP. No `--remote-debugging-port`. Just run the script.
+
+<details>
+<summary><strong>Linux</strong></summary>
+<br />
+
+Close all Antigravity instances, then:
+
+```bash
+sudo python3 ./patch_antigravity.py
+```
+
+Or use the launcher:
+
+```bash
+sudo ./patch_antigravity.sh
+```
+
+Restart Antigravity. Done.
+
+</details>
+
+<details>
+<summary><strong>macOS</strong></summary>
+<br />
+
+Close Antigravity, then:
+
+```bash
+python3 ./patch_antigravity.py
+```
+
+Restart Antigravity.
+
+</details>
+
+<details>
+<summary><strong>Windows</strong></summary>
+<br />
+
+Close Antigravity, then run:
+
+```
+patch_antigravity.cmd
+```
+
+Or from PowerShell:
+
+```powershell
+python .\patch_antigravity.py
+```
+
+Restart Antigravity.
+
+</details>
+
+<br />
+
+**Multiple installations?** Patch them all at once:
+
+```bash
+sudo python3 ./patch_antigravity.py --all
+```
+
+**That's it.** Every instance, every account, every environment — patched.
 
 <br />
 
@@ -301,19 +252,128 @@ Open **Settings** → search `autopilot`. Every feature toggles independently.
 
 <br />
 
-## 🔒 Security & Safety
+## Configuration
+
+Every feature is toggleable via CLI flags. Mix and match.
+
+<br />
+
+### Defaults
+
+| Feature | Default | Flag to change |
+|---------|---------|---------------|
+| Auto-Retry | **ON** | `--no-retry` |
+| Auto-Continue | **ON** | `--no-continue` |
+| Auto-Run | **OFF** | `--enable-run` |
+| Rate Limit Handler | **ON** | `--no-ratelimit` |
+
+<br />
+
+### Examples
+
+```bash
+# Default: retry + continue + ratelimit ON, run OFF
+sudo python3 ./patch_antigravity.py
+
+# Enable auto-run (with default blocklist)
+sudo python3 ./patch_antigravity.py --enable-run
+
+# Only auto-retry, nothing else
+sudo python3 ./patch_antigravity.py --no-continue --no-ratelimit
+
+# Custom run blocklist
+sudo python3 ./patch_antigravity.py --enable-run --run-blocklist "rm -rf" "sudo" "drop "
+
+# Target a specific installation
+sudo python3 ./patch_antigravity.py --root /opt/antigravity
+```
+
+<br />
+
+### CLI Reference
+
+| Command | Description |
+|---------|-------------|
+| `python3 patch_antigravity.py` | Patch with default features |
+| `python3 patch_antigravity.py --all` | Patch all detected installations |
+| `python3 patch_antigravity.py --check` | Check patch status without modifying |
+| `python3 patch_antigravity.py --print-paths` | Print detected paths and exit |
+| `python3 patch_antigravity.py --restore` | Restore original files from backup |
+| `python3 patch_antigravity.py --root <path>` | Specify install root manually |
+
+<br />
+
+---
+
+<br />
+
+## After Antigravity Updates
+
+Antigravity updated and the patch got overwritten? Re-run:
+
+```bash
+sudo python3 ./patch_antigravity.py
+```
+
+The script automatically:
+- Detects the new unpatched version
+- Refreshes the backup to match
+- Re-applies all patches with your feature configuration
+
+**One command. Always current.**
+
+<br />
+
+---
+
+<br />
+
+## Path Detection
+
+The script automatically locates Antigravity installations:
+
+| Platform | Locations checked |
+|----------|------------------|
+| **Linux** | `/usr/share/antigravity`, `/usr/lib/antigravity`, `/opt/antigravity`, `~/.local/share/antigravity`, snap, flatpak, glob discovery |
+| **macOS** | `/Applications/Antigravity.app` |
+| **Windows** | Registry, `%LOCALAPPDATA%\Programs\Antigravity`, common paths, glob discovery |
+
+<br />
+
+If auto-detection fails:
+
+```bash
+# Point to the install root
+sudo python3 ./patch_antigravity.py --root /path/to/antigravity
+
+# Or set environment variables
+export ANTIGRAVITY_INSTALL_DIR=/path/to/antigravity
+
+# Or point directly to the two target files
+export ANTIGRAVITY_WORKBENCH_PATH=/path/to/workbench.desktop.main.js
+export ANTIGRAVITY_JETSKI_PATH=/path/to/jetskiAgent/main.js
+```
+
+<br />
+
+---
+
+<br />
+
+## Security & Safety
 
 | Layer | Protection |
 |-------|-----------|
-| **Auto-Run off by default** | Must be explicitly enabled in settings |
-| **Command inspection** | Every command text is read before approve |
+| **Auto-Run off by default** | Must be explicitly enabled with `--enable-run` |
+| **Command inspection** | Every command text is read before approval |
 | **Configurable blocklist** | 16 dangerous patterns blocked out of the box |
-| **Console logging** | Blocked commands logged for full transparency |
-| **No network calls** | Extension communicates only with localhost CDP |
+| **Console logging** | All actions and blocked commands logged to DevTools console |
+| **No network calls** | Everything runs locally. Zero outbound connections |
 | **No telemetry** | Zero data collection. Zero analytics. Zero tracking |
+| **Backup & restore** | Original files backed up automatically. `--restore` reverts everything |
 | **Open source** | Full source audit available in this repository |
 
-The extension **never reads, stores, or transmits your source code**.
+The script **never reads, stores, or transmits your source code**.
 
 <br />
 
@@ -321,38 +381,74 @@ The extension **never reads, stores, or transmits your source code**.
 
 <br />
 
-## 🔧 Troubleshooting
+## Monitoring
 
-<details>
-<summary><strong>"CDP not available" error</strong></summary>
-<br />
+All autopilot actions are logged to the DevTools console. Open `Ctrl+Shift+I` → Console → filter `[Autopilot]`:
 
-Antigravity was not launched with the `--remote-debugging-port` flag. See [Installation Step 1](#step-1-enable-chrome-devtools-protocol-one-time).
-
-Verify CDP is active:
-
-```bash
-curl http://127.0.0.1:9222/json/version
+```
+[Autopilot] Active | continue=true run=false rateLimit=true
+[Autopilot] continues (#1)
+[Autopilot] Rate limit detected. Waiting 30s...
+[Autopilot] Rate limit wait complete. Resuming.
+[Autopilot] retries (#1)
+[Autopilot] BLOCKED unsafe command: rm -rf /tmp/important
 ```
 
-A JSON response means it's working.
+<br />
+
+---
+
+<br />
+
+## Troubleshooting
+
+<details>
+<summary><strong>"Could not locate any Antigravity installation"</strong></summary>
+<br />
+
+The script couldn't find Antigravity at any default path. Use `--root`:
+
+```bash
+sudo python3 ./patch_antigravity.py --root /path/to/antigravity
+```
+
+Or check what the script is looking for:
+
+```bash
+python3 ./patch_antigravity.py --print-paths
+```
 
 </details>
 
 <details>
-<summary><strong>Using a non-standard CDP port</strong></summary>
+<summary><strong>"signature not found" on --check</strong></summary>
 <br />
 
-Set `autopilot.cdpPort` to your port number in Settings. When set to `0` (default), Autopilot auto-scans ports `9222, 9000, 9001, 9002, 9003`.
+The current Antigravity version changed the error notification structure enough that the regex can't match. This happens when Antigravity does a major refactor of the error handling flow (not just variable renames). The patch script needs to be updated to match the new structure.
 
 </details>
 
 <details>
-<summary><strong>Extension not activating after install</strong></summary>
+<summary><strong>Permission denied</strong></summary>
 <br />
 
-1. Reload: `Ctrl+Shift+P` → `Developer: Reload Window`
-2. Check output: `Ctrl+Shift+U` → select **"Antigravity Autopilot"**
+On Linux, system-wide installs (`/usr/share/`) require root:
+
+```bash
+sudo python3 ./patch_antigravity.py
+```
+
+</details>
+
+<details>
+<summary><strong>Want to undo everything</strong></summary>
+<br />
+
+```bash
+sudo python3 ./patch_antigravity.py --restore
+```
+
+This restores the original files from the automatic backups.
 
 </details>
 
@@ -362,21 +458,29 @@ Set `autopilot.cdpPort` to your port number in Settings. When set to `0` (defaul
 
 <br />
 
-## ❓ FAQ
+## FAQ
 
 <details>
-<summary><strong>Does this work with VS Code, Cursor, or Windsurf?</strong></summary>
+<summary><strong>Why not a VS Code extension?</strong></summary>
 <br />
 
-Autopilot is built for **Antigravity** (a VS Code fork with a built-in AI agent). It may work with other Electron-based editors that expose CDP, but compatibility is not guaranteed. Contributions to support other editors are welcome.
+The previous version (v2.x) was a VS Code extension using Chrome DevTools Protocol. It required launching Antigravity with `--remote-debugging-port`, created port conflicts with multiple instances, and didn't work in separate environments. Direct file patching solves all of these problems.
 
 </details>
 
 <details>
-<summary><strong>Does it work over Remote SSH?</strong></summary>
+<summary><strong>Does it work with multiple Antigravity instances?</strong></summary>
 <br />
 
-Yes. The extension declares `extensionKind: ["ui"]`, so it always runs on your **local machine** where CDP is accessible. No manual configuration needed.
+Yes. Since the patch modifies the bundled files on disk, **every instance** that uses those files gets the autopilot behavior. Use `--all` to patch multiple installations at once.
+
+</details>
+
+<details>
+<summary><strong>Does it survive Antigravity updates?</strong></summary>
+<br />
+
+Updates overwrite the patched files. Re-run the script after each update — it auto-detects the new version, refreshes backups, and re-applies patches. Takes under a second.
 
 </details>
 
@@ -384,15 +488,7 @@ Yes. The extension declares `extensionKind: ["ui"]`, so it always runs on your *
 <summary><strong>Is Auto-Run really safe?</strong></summary>
 <br />
 
-Auto-Run is **disabled by default**. When you opt in, every command is checked against a blocklist before clicking "Run". Operations like `rm -rf`, `sudo`, `shutdown`, `dd`, and `chmod 777` are blocked. You can extend the blocklist with your own patterns. Blocked commands are logged to the developer console.
-
-</details>
-
-<details>
-<summary><strong>Can I use only one feature and disable the rest?</strong></summary>
-<br />
-
-Yes. Every feature has its own toggle in Settings. Turn on what you need, turn off what you don't.
+Auto-Run is **disabled by default**. When enabled with `--enable-run`, every command is checked against a blocklist before clicking "Run". Operations like `rm -rf`, `sudo`, `shutdown`, `dd`, and `chmod 777` are blocked. You can customize the blocklist with `--run-blocklist`. Blocked commands are logged to the console.
 
 </details>
 
@@ -400,23 +496,15 @@ Yes. Every feature has its own toggle in Settings. Turn on what you need, turn o
 <summary><strong>What languages does button detection support?</strong></summary>
 <br />
 
-English and Italian. Detected buttons include: Retry, Try Again, Riprova, Continue, Continua, Proceed, Yes, Run, Execute, Esegui, Keep Going, Continue Generating.
+English and Italian. Detected buttons: Retry, Try Again, Riprova, Continue, Continua, Proceed, Yes, Run, Execute, Esegui, Keep Going, Continue Generating.
 
 </details>
 
 <details>
-<summary><strong>Does it use my API key or send data anywhere?</strong></summary>
+<summary><strong>Can I use only one feature and disable the rest?</strong></summary>
 <br />
 
-No. Autopilot runs entirely on your local machine. It communicates only with `127.0.0.1` via CDP. Zero network requests. Zero telemetry.
-
-</details>
-
-<details>
-<summary><strong>How much CPU does it use?</strong></summary>
-<br />
-
-The injected script runs a lightweight DOM scan every 1.5 seconds. The extension itself polls stats every 5 seconds. Total overhead is negligible — well under 0.1% CPU on modern hardware.
+Yes. Combine flags: `--no-retry --no-continue --no-ratelimit` disables everything except what you leave on. `--enable-run` adds auto-run. Mix and match.
 
 </details>
 
@@ -426,25 +514,7 @@ The injected script runs a lightweight DOM scan every 1.5 seconds. The extension
 
 <br />
 
-## 🌟 Star History
-
-If Autopilot saved you from clicking through another wall of retry prompts, a ⭐ helps others find it.
-
-<a href="https://star-history.com/#guglielmo-io/antigravity-autopilot&Date">
- <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=guglielmo-io/antigravity-autopilot&type=Date&theme=dark" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=guglielmo-io/antigravity-autopilot&type=Date" />
-   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=guglielmo-io/antigravity-autopilot&type=Date" />
- </picture>
-</a>
-
-<br />
-
----
-
-<br />
-
-## 🤝 Contributing
+## Contributing
 
 Pull requests welcome. If you use a different AI coding editor and want to add support, even better.
 
@@ -460,13 +530,13 @@ Pull requests welcome. If you use a different AI coding editor and want to add s
 
 <br />
 
-## 📄 License
+## License
 
-MIT. See [`LICENSE.txt`](extension/LICENSE.txt).
+MIT. See [`LICENSE.txt`](LICENSE.txt).
 
 <br />
 
-## 👤 Author
+## Author
 
 **Guglielmo** — [@guglielmo-io](https://github.com/guglielmo-io)
 
@@ -480,10 +550,10 @@ MIT. See [`LICENSE.txt`](extension/LICENSE.txt).
 
 **Stop clicking. Start shipping.**
 
-**[⬇️ Download Antigravity Autopilot](https://github.com/guglielmo-io/antigravity-autopilot/releases/latest)**
+**[Download Antigravity Autopilot](https://github.com/guglielmo-io/antigravity-autopilot/releases/latest)**
 
 <br />
 
-<sub>If this extension saved you time, give it a ⭐ — it helps others find it.</sub>
+<sub>If this saved you time, give it a star — it helps others find it.</sub>
 
 </div>

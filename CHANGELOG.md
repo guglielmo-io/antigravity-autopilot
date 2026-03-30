@@ -1,45 +1,48 @@
-<!-- Updated: 2026-03-09 | Session: e82eba9a -->
-
 # Changelog
+
+## [3.0.0] - 2026-03-30
+
+### Changed
+- **Complete rewrite**: replaced CDP-based VS Code extension with direct file patching.
+- No longer requires `--remote-debugging-port` or any extension install.
+- Works across all Antigravity instances, accounts, and environments simultaneously.
+
+### Added
+- `patch_antigravity.py` — main patching script (Python 3, zero dependencies).
+- `patch_antigravity.sh` — Linux launcher.
+- `patch_antigravity.cmd` — Windows launcher.
+- **Two-layer patching**:
+  - Source-level: structure-based regex patches on `retryable`/`generic` switch branches for auto-retry.
+  - DOM-level: self-contained autopilot IIFE injected into workbench JS for auto-continue, auto-run, rate limit handling.
+- Feature toggles via CLI: `--no-retry`, `--no-continue`, `--enable-run`, `--no-ratelimit`, `--run-blocklist`.
+- Linux install auto-detection (system packages, snap, flatpak, local installs).
+- `--all` flag to patch every detected installation at once.
+- `--check` mode to verify patch status without modifying files.
+- `--restore` to revert to original files from backup.
+- Sentinel-based injection tracking — re-patching cleanly replaces previous injection.
+- Automatic backup refresh when Antigravity updates.
+
+### Removed
+- VS Code extension (CDP/WebSocket approach was unreliable — port conflicts, didn't work across multiple instances or separate environments).
+- `ws` npm dependency.
+- VSIX packaging.
 
 ## [2.0.2] - 2026-03-09
 
 ### Fixed
-- Agent panel detection: no longer requires iframe (`antigravity.agentPanel`). Now supports current DIV-based layout (`antigravity.agentViewContainerId`) with iframe fallback for legacy.
-- Buttons (retry, continue, run) are now correctly found and clicked.
+- Agent panel detection: supports DIV-based layout with iframe fallback.
 
 ## [2.0.1] - 2026-03-09
 
 ### Fixed
-- CDP connection now retries with exponential backoff (5 attempts, 2-32s delays) instead of failing immediately.
-- Shows spinning "Connecting..." status bar during retry attempts.
-- Removed conflicting old `antigravity-auto-retry` v1.0.0 extension.
+- CDP connection retries with exponential backoff.
 
 ## [2.0.0] - 2026-03-09
 
-### Renamed
-- **Antigravity Auto-Retry** → **Antigravity Autopilot**
-- New command namespace: `autopilot.*`
-
-### Added
-- **Auto-Continue**: Clicks Continue/Proceed/Yes when agent pauses mid-generation.
-- **Auto-Run**: Opt-in safe command approval. Inspects commands against configurable blocklist before clicking Run.
-- **Rate Limit Handler**: Detects rate limit messages, waits the required duration, then auto-retries.
-- **Session Stats**: Tracks action counts (retries, continues, runs, rate waits) per session. Displayed in status bar tooltip.
-- **8 configurable settings**: Every feature independently toggleable.
-
 ### Changed
-- Injection script rebuilt as configurable multi-feature engine.
-- Config object passed at injection time via `buildInjectionScript()`.
-- Stat polling every 5s from CDP for live tooltip updates.
-- README rewritten with full feature docs, safety section, updated architecture diagram.
-
-### Fixed (from 1.1.0)
-- Status bar is read-only indicator (no click command).
-- CDP port configurable via `autopilot.cdpPort` setting.
-- `extensionKind: ["ui"]` for Remote SSH compatibility.
+- Renamed from Antigravity Auto-Retry to Antigravity Autopilot.
+- Added auto-continue, auto-run, rate limit handler, session stats.
+- CDP-based VS Code extension approach.
 
 ## [1.0.0] - Initial release
 - CDP-based auto-retry with multi-window support.
-- Multi-language retry button detection.
-- Status bar indicator.
